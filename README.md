@@ -6,7 +6,7 @@ Petit rappel, l'électricité n'est pas un jeu, assurez-vous de toujour travaill
 DOMOTISER son portail automatique avec un esp32 sous esphome pour 25 euros.
 
 Si vous voulez domotiser une Touche 1 Vantail il faudra d'abord faire un test de faisabilité:
-Motorisation Hors tension, debranchez le moteur2 du vantail puis remettre sous tension. Faite un essais avec la telecommande ouverture 2 vantaux puis fermeture.
+Motorisation Hors tension, debranchez le moteur2 du vantail puis remettre sous tension. Faite un essai avec la télècommande ouverture 2 vantaux puis fermeture.
 Si tout est ok, vous pouvez domotiser la touche 1 vantail.
 
 materiel requis:
