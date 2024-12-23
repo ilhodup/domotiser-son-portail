@@ -48,17 +48,24 @@ time:
 
     on_time:
 
-      - minutes: 30
+      - seconds: 00
+        minutes: 30
         hours: 17
         then: 
           - switch.turn_on: nuit
-      - hours: 18
+      - seconds: 00
+        minutes: 00
+        hours: 18
         then: 
-          - switch.turn_on: nuit 
-      - hours: 08
+          - switch.turn_on: nuit
+      - seconds: 00
+        minutes: 00
+        hours: 08
         then: 
           - switch.turn_off: nuit
-      - hours: 09 
+      - seconds: 00
+        minutes: 00
+        hours: 09 
         then: 
           - switch.turn_off: nuit
           
