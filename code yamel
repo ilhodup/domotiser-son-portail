@@ -1,0 +1,347 @@
+esphome:
+  name: portail-automatique
+  friendly_name: portail automatique
+  on_boot:
+      then:
+        - switch.turn_off: contact_sec
+        - switch.turn_off: ouverture_50
+        - switch.turn_off: eclairage_1
+
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "VQBoMXQ="
+
+ota:
+  - platform: esphome
+    password: "c3b6c7d"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: NONE
+  reboot_timeout: 0s
+    
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+
+
+  ap:
+    ssid: "Portail-Automatique"
+    password: "hOQ"
+
+captive_portal:
+
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time  
+
+    on_time:
+
+      - minutes: 30
+        hours: 17
+        then: 
+          - switch.turn_on: nuit
+      - hours: 18
+        then: 
+          - switch.turn_on: nuit 
+      - hours: 08
+        then: 
+          - switch.turn_off: nuit
+      - hours: 09 
+        then: 
+          - switch.turn_off: nuit
+          
+stepper:
+  - platform: uln2003
+    id: my_stepper
+    pin_a: GPIO13
+    pin_b: GPIO14
+    pin_c: GPIO27
+    pin_d: GPIO26
+    max_speed: 100 steps/s
+    acceleration: inf
+    deceleration: inf
+    sleep_when_done: True
+
+sensor:
+
+  - platform: wifi_signal
+    name: "Signal WiFi dB"
+    id: wifi_signal_db
+    update_interval: 10s
+    entity_category: "diagnostic"
+
+  - platform: copy
+    source_id: wifi_signal_db
+    name: "Signal WiFi %"
+    icon: mdi:wifi
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "Signal %"
+    entity_category: "diagnostic"
+    device_class: ""
+    
+  - platform: uptime
+    name: "up Esp Portail"
+    id: uptime_sec 
+
+  - platform: template
+    name: "Position %"
+    id: position_poucentage
+    update_interval: 1s
+    lambda: |-
+      return (id( my_stepper).current_position/2500.0)*100.0;
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    on_value:
+       then:
+          - if: 
+              condition:
+                -  lambda: |-
+                      return id(position_poucentage).state <=-1;
+              then:         
+                - stepper.report_position:
+                      id: my_stepper
+                      position: 0  
+                - stepper.set_target:
+                      id: my_stepper
+                      target: 0
+
+switch:
+
+  - platform: restart
+    name: "Restart Esp Portail"
+
+  - platform: gpio
+    pin: 05
+    name: "Gyrophare"
+    id: portail_icon
+    inverted: true 
+    icon: mdi:alarm-light
+    
+  - platform: gpio
+    pin: 16
+    id: contact_sec
+    inverted: true
+    name: "contact sec"
+    icon: mdi:gate-open
+
+  - platform: gpio
+    pin: 17
+    id: stop_moteur2
+    inverted: true
+    name: "Stop Moteur2"
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: mdi:gate-arrow-right
+
+    
+  - platform: template
+    name: "ouverture 50%"
+    id: ouverture_50
+    icon: mdi:gate-arrow-left
+    optimistic: True
+
+    on_turn_on:
+      then:
+        - if: 
+              condition:
+                -  lambda: |-
+                    return id(position_poucentage).state ==0;
+              then:     
+              - switch.turn_on: stop_moteur2
+              - script.execute: active   
+              - script.stop: minuterie_1
+              - script.execute: minuterie_1  
+              - delay: 6s
+              - stepper.set_target:
+                    id: my_stepper
+                    target: !lambda |-
+                      return id(my_stepper).current_position;
+                      int pos = id(my_stepper).current_position;
+              - script.execute: active
+
+    on_turn_off:
+              then:         
+              - script.stop: minuterie_1
+              - script.execute: active   
+              - script.execute: minuterie_1
+
+  - platform: gpio
+    pin: 19
+    id: eclairage_1
+    inverted: true
+    name: "Eclairage"
+    icon: mdi:light-flood-down
+
+  - platform: gpio
+    pin: 18
+    id: nuit
+    inverted: False
+    name: "Nuit 17h30 à 8h00"
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: mdi:theme-light-dark
+
+
+button:
+
+  - platform: template
+    name: "Eclairage 2min"
+    icon: mdi:light-flood-down
+    on_press:
+      then:
+        - switch.turn_on: eclairage_1
+        - delay: 2min
+        - switch.turn_off: eclairage_1
+
+  - platform: template
+    name: "Eclairage 5min"
+    icon: mdi:light-flood-down
+    on_press:
+      then:
+        - switch.turn_on: eclairage_1
+        - delay: 5min
+        - switch.turn_off: eclairage_1
+
+  - platform: template
+    name: "Ouveture 2"
+    icon: mdi:gate-open
+    on_press:
+      then:
+        - script.execute: active   
+
+  - platform: template
+    name: "Ouveture 1"
+    icon: mdi:gate-arrow-left
+    on_press:
+      then:
+          - if: 
+              condition:
+                -  lambda: |-
+                    return id(position_poucentage).state ==0;
+              then:       
+                - switch.turn_on: stop_moteur2       
+                - script.execute: active  
+                - delay: 19s
+                - script.execute: active
+                - delay: 4s
+                - script.execute: active
+
+              else:
+                - script.execute: active
+binary_sensor:
+
+  - platform: gpio
+    pin:
+      number: 21
+    id: fdc
+    filters:
+      - invert:
+    name: "fin de course"
+    on_press: 
+      then:
+        - delay: 1s
+        - stepper.report_position: 
+              id: my_stepper
+              position: 0
+        - stepper.set_target:
+              id: my_stepper
+              target: 0
+        - switch.turn_off: stop_moteur2
+        - switch.turn_off: portail_icon
+
+  - platform: gpio
+    pin: GPIO32
+    name: opto1
+    id: opto1
+    filters:
+      - invert:
+    on_press: 
+      then:
+        - stepper.set_target:
+             id: my_stepper
+             target: -1000
+        - script.stop: minuterie_1
+        - script.execute: minuterie_1
+        - script.execute: icon
+    on_release: 
+      then:
+        - stepper.set_target:
+            id: my_stepper
+            target: !lambda |-
+              return id(my_stepper).current_position;
+        - script.stop: minuterie_1
+        - script.stop: icon
+        - script.execute: minuterie_1
+
+  - platform: gpio
+    pin: GPIO33
+    name: opto2
+    id: opto2
+    filters:
+      - invert:
+    on_press: 
+      then:   
+        - script.execute: icon
+        - stepper.set_target:
+             id: my_stepper
+             target: 2500
+        - script.stop: minuterie_1
+        - script.execute: minuterie_1
+        - if: 
+              condition:
+                -  lambda: |-
+                      return id(position_poucentage).state >65;
+              then:  
+                - stepper.report_position:
+                      id: my_stepper
+                      position: 2500     
+                - stepper.set_target:
+                      id: my_stepper
+                      target: 2500
+       
+    on_release: 
+      then:
+        - script.stop: icon
+        - stepper.set_target:
+            id: my_stepper
+            target: !lambda |-
+              return id(my_stepper).current_position;
+        - script.stop: minuterie_1
+        - script.execute: minuterie_1
+
+
+  - platform: status
+    name: "Status Portail"   
+
+script:
+  - id: active
+    then:
+      - switch.turn_on: contact_sec
+      - delay: 1s
+      - switch.turn_off: contact_sec
+          
+  - id: minuterie_1
+    then:
+      - switch.turn_on: eclairage_1
+      - delay: 2min
+      - switch.turn_off: eclairage_1
+
+  - id: icon
+    then:
+      repeat:
+        count: 29
+        then:
+          - switch.toggle: portail_icon
+          - delay: 1s
+
