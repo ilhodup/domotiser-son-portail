@@ -15,7 +15,7 @@ materiel requis:
 - 2 optocoupleurs 24VDC ou 230VAC suivant le/les moteurs que vous avez.(3,60 euros les 2)
 - 2 diodes 1N4007 ou autres selement si vous avez des moteurs en 24VDC.
 - 1 tranfo 230VAC/5VDC 3W minimum. (3.5 euros)
-- 1 fin de course 5V etanche. (7.50 euros)
+- 1 fin de course 5V étanche comme sur la photo. (7.50 euros). Bien faire attention de prendre un 5V-30V et non un 1v0-30V cart le 10v+30v je ne l'ai pas testé.
 
   ![Screenshot_20241204_133002_AliExpress - Copie](https://github.com/user-attachments/assets/cbbf3a94-3efd-42c8-a344-54b178512394)
 
@@ -25,7 +25,7 @@ materiel requis:
 
   
 
-La plupart des portails automatiques ont un contact sec(pas a pas) pour commander l'ouverture avec un interphone ou bouton poussoir: ouverture/stop/fermeture. C'est à partir de cette fonction que l'on va domotiser:
+La plupart des portails automatiques ont un contact sec(pas à pas) pour commander l'ouverture avec un interphone ou bouton poussoir: ouverture/stop/fermeture. C'est à partir de cette fonction que l'on va domotiser:
 - 1 bouton pour Ouvrir/Fermer 1 vantail.
 - 1 bouton pour Ouvrir/Fermer les 2 vantaux.
 - 1 bouton pour avoir une Ouverture parcielle d'un vantail.
@@ -61,7 +61,7 @@ La fin de course est nécessaire, c'est lui qui va donner l'information que le p
 Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique.
 
 REGLAGES:
-Une fois l'esp32 flashé et cablé,  vous devrez chronomètrer le temps d'ouverture et de fermeture, prendre le temps le plus long et modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 104, 298, 308, 311 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Un exemple, si le temps de fermeture est de 35s, vous pouvez mettre 3000 puis tester.
+Une fois l'esp32 flashé et cablé,  vous chronomètrer le temps d'ouverture et de fermeture, prendre le temps le plus long et modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 104, 298, 308, 311 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Un exemple, si le temps de fermeture est de 35s, vous pouvez mettre 3000 puis tester.
 Du fait que l'ouverture à une durée plus courte que la fermeture, à 65% d'ouverture le portail est ouvert à 100%. Pour cela à la ligne 304 pour 65% on oblige 
 à paser a 100%. Ainsi la fermeture aura le decompte sera plus réel. Ces lignes seront à supprimer si vous avez une ouverture et fermeture lineaires.
 Pour l'ouverture partielle, à la ligne 166 il y a 6s. A modifier si besoin.
