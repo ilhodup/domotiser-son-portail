@@ -15,7 +15,8 @@ materiel requis:
 - 2 optocoupleurs 24VDC ou 230VAC suivant le/les moteurs que vous avez.(3,60 euros les 2)
 - 2 diodes 1N4007 ou autres selement si vous avez des moteurs en 24VDC.
 - 1 tranfo 230VAC/5VDC 3W minimum. (3.5 euros)
-- 1 fin de course 5V étanche comme sur la photo. (7.50 euros). Bien faire attention de prendre un 5V-30V et non un 1v0-30V cart le 10v+30v je ne l'ai pas testé.
+- 1 fin de course 5V étanche comme sur la photo. (7.50 euros). Bien faire attention de prendre un 5V-30V et non un 10V-30V car le 10v+30v je ne l'ai pas testé.
+Faite un achat groupé pour reduire les frais de livraison.
 
   ![Screenshot_20241204_133002_AliExpress - Copie](https://github.com/user-attachments/assets/cbbf3a94-3efd-42c8-a344-54b178512394)
 
