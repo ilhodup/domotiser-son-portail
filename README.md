@@ -1,5 +1,5 @@
 # domotiser son portail
-# Portail-Automatique
+# Portail Automatique
 
 Petit rappel, l'électricité n'est pas un jeu, assurez-vous de toujour travailler hors tension.
 
