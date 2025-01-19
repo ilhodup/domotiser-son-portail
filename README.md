@@ -66,11 +66,11 @@ La fin de course est nécessaire, c'est lui qui va donner l'information que le p
 ![20241214_114451](https://github.com/user-attachments/assets/68a6647e-5797-42a3-8ee0-fa8fd37eb93a)
 
 
-Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique. Pour la fixation faite en sorte que ce soit réglable. J'ai mis le capteur un peu incliné par rapport au bras du moteur pour plus de securité.
+Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique. Par sécurité j'ai mis ce capteur un peu incliné par rapport au bras du moteur. Pour la fixation faite en sorte que ce soit réglable.
 
 REGLAGES:
-Une fois tout cablé,  il faudra chronomètrer le temps d'ouverture et le temps de fermeture puis prendre le temps le plus long pour modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 111, 305, 315, 318 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Par exemple, si le temps le plus long est de 35s, il faut remplacer les chiffres 2500 par 3000 dans les lignes 111, 305, 315, 318 puis flasher l'esp32 et tester.
-Du fait que l'ouverture à une durée plus courte que la fermeture, à 65% d'ouverture le portail passera à 100%. C'est à la ligne 304 pour ppaser de 65% à
+Une fois tout cablé,  il faudra chronomètrer le temps d'ouverture et le temps de fermeture puis prendre le temps le plus long pour modifier les reglages dans le code Yaml. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 111, 305, 315, 318 les valeurs sont ainsi portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Par exemple, si le temps le plus long est de 35s, il faut remplacer les chiffres 2500 par 3000 dans les lignes 111, 305, 315, 318 puis flasher l'esp32 et tester.
+Du fait que l'ouverture à une durée plus courte que la fermeture, à 65% d'ouverture le portail passera à 100%. C'est à la ligne 304 pour paser de 65% à
 à  100%. Ainsi à la fermeture on aura belle est bien le bon decompte. Ces lignes seront à supprimer si vous avez une ouverture et fermeture lineaires.
 Pour l'ouverture partielle, à la ligne 173 il y a 6s. A modifier selon votre motorisation.
 
@@ -85,7 +85,7 @@ l'icon gyrophare me sert pour faire clignoter l'icon ouverture ou fermeture lors
 
 ![20241206_175830](https://github.com/user-attachments/assets/ea25d35e-8b67-41d7-abc7-e8dcedba501a)
 
-Dans cette boite il y a l'esp32, les 2 optos, la carte 4 relais et un tranfo 230AC/5VDC.
+Dans cette boite vous pouvez voir l'esp32, les 2 opto-coupleurs, la carte 4 relais et un tranfo 230AC/5VDC.
 
 ![20241214_111033](https://github.com/user-attachments/assets/eff83ba7-c609-4ed2-b209-c53424352cd8)
 Le montage fini avec l'antenne de l'esp32 déporté pour une meilleur réception.
