@@ -73,7 +73,7 @@ Du fait que l'ouverture à une durée plus courte que la fermeture, à 65% d'ouv
 Pour l'ouverture partielle, à la ligne 173 il y a 6s. A modifier selon votre motorisation.
 
 Sur mon dashboard, pour avoir 1 vantail ou 1 vantail partiel on doit faire un clic long pour éviter un appuis par erreur et laisser le bouton 2 vantaux prioritaire.
-l'icon portail me sert pour faire clignoter l'icon ouverture ou fermeture lorsque celui ci est en mouvemant.
+l'icon gyrophare me sert pour faire clignoter l'icon ouverture ou fermeture lorsque celui ci est en mouvemant.
 
 
 
