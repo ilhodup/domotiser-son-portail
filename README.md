@@ -41,15 +41,17 @@ La plupart des portails automatiques ont un contact sec(pas à pas) pour command
 
 ![Screenshot_20241214_154510_Home Assistant](https://github.com/user-attachments/assets/51731468-0e3e-4a00-9315-5657aa2c5a07)
 
-- Le 1e relais sur le pin 16 sera le contact sec pour Ouvrir/Fermer.
-- Le 2e relais sur le pin 17 sera pour stoper le 2e moteur pour faire la fonction 1 vantail.
-- Le 3e relais sur le pin 18 sera pour l'eclairage de la lampe.
-- le 4e relais ssur le pin 19 era pour le crénaux horaire J/N.
+Sur la carte 5Vcc 4 relais: 
+- Le 1e relais IN1 sur le pin 16 de l'esp32 sera le contact sec pour Ouvrir/Fermer.
+- Le 2e relais IN2 sur le pin 17 sera pour stoper le 2e moteur pour faire la fonction 1 vantail.
+- Le 3e relais IN3 sur le pin 18 sera pour l'eclairage de la lampe.
+- le 4e relais IN4 sur le pin 19 era pour le crénaux horaire J/N.
+
+Attention, bien respecter le schema de cablage sur la carte relais pour l'eclairage: relai 3 et ralai 4.
 
 ACHAT:
 Meme si vous voulez pas mettre de lampe exterieur, je vous conseil de prendre quand même une carte 4 relais vu son prix. Si un jour l'envie d'en mettre une vous serez pas bloqué.
 Je vous conseil vivement de prendre un esp32 avec une antenne deportée pour une meilleur reception surtout que l'esp32 sera fermé dans une boite. J'ai pris un WROOM-32U avec antenne 2.4G.
-Eviter autant que possible les cables Dupond.
 
 les 2 optocoupleurs servent à savoir dans quel sens le moteur tourne, si c'est en ouverture ou en fermeture. L'inversion de la tension 24Vcc sur ce moteur nous oblige à mettre 2 diodes 1N400x pour determiner ce sens.
 Pour les 2 diodes voici comment je les ai integrés: un bout de fil internet cat6 sur la diode avec une petite soudure et 2 bouts de gaine thermo pour isoler et tenir l'ensemble. Laisser au 10cm de longueur pour pouvoir cabler facilement sur l'optocoupleur.
