@@ -67,10 +67,10 @@ La fin de course est nécessaire, c'est lui qui va donner l'information que le p
 Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique. Pour la fixation faite en sorte que ce soit réglable. J'ai mis le capteur un peu incliné par rapport au bras du moteur pour plus de securité.
 
 REGLAGES:
-Une fois tout cablé,  il faudra chronomètrer le temps d'ouverture et le temps de fermeture puis prendre le temps le plus long pour modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 104, 298, 308, 311 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Par exemple, si le temps le plus long est de 35s, il faut remplacer les chiffres 2500 par 3000 dans les lignes 104, 298, 308, 311 puis flasher l'esp32 et tester.
+Une fois tout cablé,  il faudra chronomètrer le temps d'ouverture et le temps de fermeture puis prendre le temps le plus long pour modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 111, 305, 315, 318 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Par exemple, si le temps le plus long est de 35s, il faut remplacer les chiffres 2500 par 3000 dans les lignes 111, 305, 315, 318 puis flasher l'esp32 et tester.
 Du fait que l'ouverture à une durée plus courte que la fermeture, à 65% d'ouverture le portail passera à 100%. C'est à la ligne 304 pour ppaser de 65% à
 à  100%. Ainsi à la fermeture on aura belle est bien le bon decompte. Ces lignes seront à supprimer si vous avez une ouverture et fermeture lineaires.
-Pour l'ouverture partielle, à la ligne 166 il y a 6s. A modifier selon votre motorisation.
+Pour l'ouverture partielle, à la ligne 173 il y a 6s. A modifier selon votre motorisation.
 
 Sur mon dashboard, pour avoir 1 vantail ou 1 vantail partiel on doit faire un clic long pour éviter un appuis par erreur et laisser le bouton 2 vantaux prioritaire.
 l'icon portail me sert pour faire clignoter l'icon ouverture ou fermeture lorsque celui ci est en mouvemant.
