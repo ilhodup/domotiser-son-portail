@@ -5,17 +5,18 @@ Petit rappel, l'électricité n'est pas un jeu, assurez-vous de toujour travaill
 
 DOMOTISER son portail automatique avec un esp32 sous esphome pour 25 euros.
 
-Si vous voulez domotiser une Touche 1 Vantail il faudra d'abord faire un test de faisabilité:
-Motorisation Hors tension, debranchez le moteur2 du vantail puis remettre sous tension. Faite un essai avec la télècommande ouverture 2 vantaux puis fermeture.
+Si vous souhaitez domotiser une Touche 1 Vantail sur votre automatisme 2 vantaux il faudra d'abord faire un test de faisabilité:
+Motorisation Hors tension, debranchez le moteur2 du vantail puis remettre sous tension. Faite un essai avec la télècommande ouverture total 2 vantaux puis fermeture.
 Si tout est ok, vous pouvez domotiser la touche 1 vantail.
 
 materiel requis:
-- 1 esp32. ( entre 4.50 et 7 euros)
+- 1 esp32 avec antenne deporté. ( entre 4.50 et 7 euros)
 - 1 carte 4 relais 5V. (2.80 euros)
 - 2 optocoupleurs 24VDC ou 230VAC suivant le/les moteurs que vous avez.(3,60 euros les 2)
 - 2 diodes 1N4007 ou autres selement si vous avez des moteurs en 24VDC.
 - 1 tranfo 230VAC/5VDC 3W minimum. (3.5 euros)
 - 1 fin de course 5V étanche SN04-N 5V 30V comme sur la photo. (7.50 euros). Faire BIEN attention de prendre un capteur 5V-30V et non un 10V-30V car le 10v+30v je ne l'ai pas testé.
+
 Faite un achat groupé pour reduire les frais de livraison.
 
   ![Screenshot_20241204_133002_AliExpress - Copie](https://github.com/user-attachments/assets/cbbf3a94-3efd-42c8-a344-54b178512394)
@@ -26,12 +27,13 @@ Faite un achat groupé pour reduire les frais de livraison.
 
   
 
-La plupart des portails automatiques ont un contact sec(pas à pas) pour commander l'ouverture avec un interphone ou bouton poussoir: ouverture/stop/fermeture. C'est à partir de cette fonction que l'on va domotiser:
+La plupart des portails automatiques ont un contact sec(pas à pas) pour commander l'ouverture avec un interphone ou un bouton poussoir: Ouverture/Stop/Fermeture. C'est à partir de cette fonction que l'on va domotiser:
+
 - 1 bouton pour Ouvrir/Fermer 1 vantail.
 - 1 bouton pour Ouvrir/Fermer les 2 vantaux.
-- 1 bouton pour avoir une Ouverture parcielle d'un vantail.
-- 1 bouton poussoir pour Allumer ou Eteindre une lampe.
-- 1 bouton pour une tempo de 5min de la meme lampe.
+- 1 bouton pour Ouverture parcielle d'un vantail.
+- 1 bouton poussoir pour Allumer/Eteindre une lampe.
+- 1 bouton pour une tempo de 5min de la même lampe.
 - 1 crénau horaire pour l'éclairage de 17h30 à 8h00.
 
 
@@ -39,16 +41,18 @@ La plupart des portails automatiques ont un contact sec(pas à pas) pour command
 
 ![Screenshot_20241214_154510_Home Assistant](https://github.com/user-attachments/assets/51731468-0e3e-4a00-9315-5657aa2c5a07)
 
-- Le 1e relais sur le pin 16 sera le contact sec pour ouvrir/fermer.
+- Le 1e relais sur le pin 16 sera le contact sec pour Ouvrir/Fermer.
 - Le 2e relais sur le pin 17 sera pour stoper le 2e moteur pour faire la fonction 1 vantail.
 - Le 3e relais sur le pin 18 sera pour l'eclairage de la lampe.
 - le 4e relais ssur le pin 19 era pour le crénaux horaire J/N.
 
 ACHAT:
 Meme si vous voulez pas mettre de lampe exterieur, je vous conseil de prendre quand même une carte 4 relais vu son prix. Si un jour l'envie d'en mettre une vous serez pas bloqué.
-Je vous conseil vivement de prendre un esp32 avec une antenne deportée pour une meilleur reception. J'ai pris un WROOM-32U avec antenne 2.4G.
+Je vous conseil vivement de prendre un esp32 avec une antenne deportée pour une meilleur reception surtout que l'esp32 sera fermé dans une boite. J'ai pris un WROOM-32U avec antenne 2.4G.
 Eviter autant que possible les cables Dupond.
-Pour les 2 diodes voici comment je les ai integrés, quelques soudures et de la gaines thermo pour isoler:
+
+les 2 optocoupleurs servent à savoir dans quel sens le moteur tourne, si c'est en ouverture ou en fermeture. L'inversion de la tension 24Vcc sur ce moteur nous oblige à mettre 2 diodes 1N400x pour determiner ce sens.
+Pour les 2 diodes voici comment je les ai integrés: un bout de fil internet cat6 sur la diode avec une petite soudure et 2 bouts de gaine thermo pour isoler et tenir l'ensemble. Laisser au 10cm de longueur pour pouvoir cabler facilement sur l'optocoupleur.
 
 ![20241213_233337](https://github.com/user-attachments/assets/a86f2d1d-249f-4166-aed7-bd01418cd27e)
 ![20241213_235005](https://github.com/user-attachments/assets/73a0f288-ece3-4e72-bfd5-5773b4240bde)
@@ -59,7 +63,8 @@ La fin de course est nécessaire, c'est lui qui va donner l'information que le p
 
 ![20241214_114451](https://github.com/user-attachments/assets/68a6647e-5797-42a3-8ee0-fa8fd37eb93a)
 
-Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique.
+
+Même si c'est un capteur étanche pour l'exterieur, j'ai préferé le proteger du soleil car il est situé plein sud. N'ayant pas d'imprimante 3D j'ai modelé dans une chute de goulotte élèctrique avec un décapeur thermique. Pour la fixation faite en sorte que ce soit réglable.
 
 REGLAGES:
 Une fois l'esp32 flashé et cablé,  vous chronomètrer le temps d'ouverture et de fermeture, prendre le temps le plus long et modifier les reglages dans le code yamel. Mon portail à une ouverture de 19s et une fermeture de 28s environ. dans les lignes 104, 298, 308, 311 les valeurs sont portées à 2500 et apres les essaies cela represente bien le temps de fermeture. Un exemple, si le temps de fermeture est de 35s, vous pouvez mettre 3000 puis tester.
