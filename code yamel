@@ -19,11 +19,11 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "VQBoMXQ="
+    key: "QlgwCKJ5V4j1c6K+I"
 
 ota:
   - platform: esphome
-    password: "c3b6c7d"
+    password: "c3b62"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -37,7 +37,7 @@ wifi:
 
   ap:
     ssid: "Portail-Automatique"
-    password: "hOQ"
+    password: "1ryw"
 
 captive_portal:
 
@@ -47,24 +47,23 @@ time:
     id: homeassistant_time  
 
     on_time:
-
-      - seconds: 00
+      - seconds: 50
         minutes: 30
         hours: 17
         then: 
           - switch.turn_on: nuit
-      - seconds: 00
-        minutes: 00
+      - seconds: 50
+        minutes: 30
         hours: 18
         then: 
-          - switch.turn_on: nuit
-      - seconds: 00
-        minutes: 00
+          - switch.turn_on: nuit 
+      - seconds: 50
+        minutes: 30
         hours: 08
         then: 
           - switch.turn_off: nuit
-      - seconds: 00
-        minutes: 00
+      - seconds: 50
+        minutes: 30
         hours: 09 
         then: 
           - switch.turn_off: nuit
@@ -179,10 +178,10 @@ switch:
               - script.execute: active
 
     on_turn_off:
-              then:         
+              then:        
               - script.stop: minuterie_1
+              - script.execute: minuterie_1  
               - script.execute: active   
-              - script.execute: minuterie_1
 
   - platform: gpio
     pin: 19
@@ -207,25 +206,31 @@ button:
     icon: mdi:light-flood-down
     on_press:
       then:
-        - switch.turn_on: eclairage_1
-        - delay: 2min
-        - switch.turn_off: eclairage_1
+        - script.stop: minuterie_1
+        - script.execute: minuterie_1
 
   - platform: template
     name: "Eclairage 5min"
     icon: mdi:light-flood-down
     on_press:
       then:
-        - switch.turn_on: eclairage_1
-        - delay: 5min
-        - switch.turn_off: eclairage_1
+        - if:
+            condition:
+              - switch.is_on: nuit
+            then: 
+              - switch.turn_on: eclairage_1
+              - delay: 5min
+              - switch.turn_off: eclairage_1
 
   - platform: template
     name: "Ouveture 2"
     icon: mdi:gate-open
     on_press:
-      then:
-        - script.execute: active   
+              then:      
+                - script.stop: minuterie_1
+                - script.execute: minuterie_1
+                - script.execute: active    
+
 
   - platform: template
     name: "Ouveture 1"
@@ -237,15 +242,19 @@ button:
                 -  lambda: |-
                     return id(position_poucentage).state ==0;
               then:       
+                - script.stop: minuterie_1
+                - script.execute: minuterie_1
                 - switch.turn_on: stop_moteur2       
                 - script.execute: active  
                 - delay: 19s
                 - script.execute: active
                 - delay: 4s
                 - script.execute: active
-
               else:
+                - script.stop: minuterie_1
+                - script.execute: minuterie_1
                 - script.execute: active
+
 binary_sensor:
 
   - platform: gpio
@@ -278,8 +287,6 @@ binary_sensor:
         - stepper.set_target:
              id: my_stepper
              target: -1000
-        - script.stop: minuterie_1
-        - script.execute: minuterie_1
         - script.execute: icon
     on_release: 
       then:
@@ -287,9 +294,7 @@ binary_sensor:
             id: my_stepper
             target: !lambda |-
               return id(my_stepper).current_position;
-        - script.stop: minuterie_1
         - script.stop: icon
-        - script.execute: minuterie_1
 
   - platform: gpio
     pin: GPIO33
@@ -303,8 +308,6 @@ binary_sensor:
         - stepper.set_target:
              id: my_stepper
              target: 2500
-        - script.stop: minuterie_1
-        - script.execute: minuterie_1
         - if: 
               condition:
                 -  lambda: |-
@@ -324,9 +327,6 @@ binary_sensor:
             id: my_stepper
             target: !lambda |-
               return id(my_stepper).current_position;
-        - script.stop: minuterie_1
-        - script.execute: minuterie_1
-
 
   - platform: status
     name: "Status Portail"   
@@ -340,9 +340,13 @@ script:
           
   - id: minuterie_1
     then:
-      - switch.turn_on: eclairage_1
-      - delay: 2min
-      - switch.turn_off: eclairage_1
+      - if: 
+          condition:
+            - switch.is_on: nuit
+          then:
+            - switch.turn_on: eclairage_1
+            - delay: 2min
+            - switch.turn_off: eclairage_1
 
   - id: icon
     then:
@@ -351,4 +355,5 @@ script:
         then:
           - switch.toggle: portail_icon
           - delay: 1s
+
 
